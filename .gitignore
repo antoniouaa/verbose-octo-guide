@@ -7,3 +7,6 @@
 
 # compilation artifacts
 /__pycache__
+
+# sample sequences
+/sequences
