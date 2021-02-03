@@ -7,6 +7,3 @@
 
 # compilation artifacts
 /__pycache__
-
-# db migrations
-/migrations
