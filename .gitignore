@@ -1,0 +1,12 @@
+# environment settings
+/venv
+/.env
+
+# editor settings
+/.vscode
+
+# compilation artifacts
+/__pycache__
+
+# db migrations
+/migrations
