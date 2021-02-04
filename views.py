@@ -115,3 +115,47 @@ def get_genome_by_id(id_):
             jsonify(utils.handle_error(request=request, err=err, status=status)),
             status,
         )
+
+
+@genome_blueprint.route("/sequences/<id_>", methods=["DELETE"])
+@utils.log_request
+def delete_genome_by_id(id_):
+    try:
+        models.delete_genome(id_)
+        return ("", 204)
+    except HTTPException as err:
+        status = err.get_response().status
+        return (
+            jsonify(utils.handle_error(request=request, err=err, status=status)),
+            status,
+        )
+
+
+@genome_blueprint.route("/sequences/<id_>", methods=["PATCH"])
+@utils.log_request
+def update_genome_by_id(id_):
+    try:
+        genome = models.update_genome(id_=id_, new_attrs=request.form)
+        return (
+            jsonify(
+                {
+                    "links": {
+                        "self": request.url,
+                    },
+                    "data": [
+                        {
+                            "type": genome.__name__,
+                            "id": genome.id,
+                            "attributes": genome.serialize(),
+                        }
+                    ],
+                }
+            ),
+            200,
+        )
+    except HTTPException as err:
+        status = err.get_response().status
+        return (
+            jsonify(utils.handle_error(request=request, err=err, status=status)),
+            status,
+        )

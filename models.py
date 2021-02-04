@@ -32,3 +32,18 @@ def create_genome(species, description, sequence):
     db.session.add(genome)
     db.session.commit()
     return genome
+
+
+def delete_genome(id_):
+    genome = Genome.query.filter_by(id=id_).first_or_404()
+    db.session.delete(genome)
+    db.session.commit()
+    return genome
+
+
+def update_genome(id_, new_attrs):
+    genome = Genome.query.filter_by(id=id_).first_or_404()
+    for attr, new_value in new_attrs.items():
+        setattr(genome, attr, new_value)
+    db.session.commit()
+    return genome
