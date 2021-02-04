@@ -51,6 +51,9 @@ def get_all_genomes():
     except HTTPException as err:
         status = err.get_response().status
         return jsonify(utils.handle_error(request=request, err=err, status=status))
+    except Exception as err:
+        status = err.get_response().status
+        return jsonify(utils.handle_error(request=request, err=err, status=status))
 
 
 @genome_blueprint.route("/sequences", methods=["POST"])

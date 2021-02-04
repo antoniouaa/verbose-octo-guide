@@ -10,3 +10,6 @@
 
 # sample sequences
 /sequences
+
+# logs
+*.log
