@@ -1,4 +1,4 @@
-from app import db
+from . import db
 
 
 class Genome(db.Model):
@@ -25,3 +25,10 @@ class Genome(db.Model):
             "species": self.species,
             "sequence": self.sequence,
         }
+
+
+def create_genome(species, description, sequence):
+    genome = Genome(species=species, description=description, sequence=sequence)
+    db.session.add(genome)
+    db.session.commit()
+    return genome

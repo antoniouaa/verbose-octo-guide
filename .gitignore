@@ -6,7 +6,7 @@
 /.vscode
 
 # compilation artifacts
-/__pycache__
+**/__pycache__
 
 # sample sequences
 /sequences

@@ -1,9 +1,4 @@
 import os
-import dotenv
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-dotenv.load_dotenv()
 
 
 class Config(object):
