@@ -29,7 +29,8 @@ def get_all_genomes():
     try:
         genomes = models.Genome.query.all()
         if not genomes:
-            raise Exception("No genomes found in the Database")
+            status = "404 NOT FOUND"
+            raise Exception(f"{status.title()}: No genomes found in the database")
         return (
             jsonify(
                 {
@@ -52,7 +53,6 @@ def get_all_genomes():
         status = err.get_response().status
         return jsonify(utils.handle_error(request=request, err=err, status=status))
     except Exception as err:
-        status = err.get_response().status
         return jsonify(utils.handle_error(request=request, err=err, status=status))
 
 
