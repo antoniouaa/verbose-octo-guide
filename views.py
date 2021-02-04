@@ -1,11 +1,11 @@
 from flask import jsonify, request, Blueprint
 from werkzeug.exceptions import HTTPException
 
-from . import models
-from . import utils
-
+import utils
 
 genome_blueprint = Blueprint("genome_blueprint", __name__)
+
+import models
 
 
 @genome_blueprint.route("/", methods=["GET"])
