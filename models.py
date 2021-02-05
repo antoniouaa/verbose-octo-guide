@@ -6,14 +6,16 @@ class Genome(db.Model):
     __name__ = "genome"
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String())
-    species = db.Column(db.String())
-    sequence = db.Column(db.String())
+    description = db.Column(db.String(), nullable=False)
+    species = db.Column(db.String(), nullable=False)
+    sequence = db.Column(db.String(), nullable=False, unique=True)
+    type = db.Column(db.String(), nullable=False)
 
-    def __init__(self, species, description, sequence):
+    def __init__(self, species, description, sequence, type):
         self.species = species
         self.description = description
         self.sequence = sequence
+        self.type = type
 
     def __repr__(self):
         return f"<id {self.id}>"
@@ -24,11 +26,14 @@ class Genome(db.Model):
             "description": self.description,
             "species": self.species,
             "sequence": self.sequence,
+            "type": self.type,
         }
 
 
-def create_genome(species, description, sequence):
-    genome = Genome(species=species, description=description, sequence=sequence)
+def create_genome(species, description, sequence, type=None):
+    genome = Genome(
+        species=species, description=description, sequence=sequence, type=type
+    )
     db.session.add(genome)
     db.session.commit()
     return genome

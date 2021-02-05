@@ -64,9 +64,10 @@ def post_genome():
     description = resp_data.get("description")
     species = resp_data.get("species")
     sequence = resp_data.get("sequence")
-    if all((sequence, species, description)):
+    type_ = resp_data.get("type")
+    if all((sequence, species, description, type_)):
         try:
-            genome = models.create_genome(species, description, sequence)
+            genome = models.create_genome(species, description, sequence, type_)
             return (
                 jsonify(
                     {
