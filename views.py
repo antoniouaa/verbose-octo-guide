@@ -1,5 +1,6 @@
 from flask import jsonify, request, Blueprint
 from werkzeug.exceptions import HTTPException
+import time
 
 import utils
 
@@ -28,9 +29,6 @@ def index():
 def get_all_genomes():
     try:
         genomes = models.Genome.query.all()
-        if not genomes:
-            status = "404 NOT FOUND"
-            raise Exception(f"{status.title()}: No genomes found in the database")
         return (
             jsonify(
                 {
@@ -44,7 +42,12 @@ def get_all_genomes():
                             "attributes": genome.serialize(),
                         }
                         for genome in genomes
+                        if genome is not None
                     ],
+                    "meta": {
+                        "length": len(genomes),
+                        "timestamp": int(time.time()),
+                    },
                 }
             ),
             200,
@@ -52,16 +55,15 @@ def get_all_genomes():
     except HTTPException as err:
         status = err.get_response().status
         return jsonify(utils.handle_error(request=request, err=err, status=status))
-    except Exception as err:
-        return jsonify(utils.handle_error(request=request, err=err, status=status))
 
 
 @genome_blueprint.route("/sequences", methods=["POST"])
 @utils.log_request
 def post_genome():
-    description = request.form.get("description")
-    species = request.form.get("species")
-    sequence = request.form.get("sequence")
+    resp_data = request.get_json()
+    description = resp_data.get("description")
+    species = resp_data.get("species")
+    sequence = resp_data.get("sequence")
     if all((sequence, species, description)):
         try:
             genome = models.create_genome(species, description, sequence)
@@ -78,6 +80,9 @@ def post_genome():
                                 "attributes": genome.serialize(),
                             }
                         ],
+                        "meta": {
+                            "timestamp": int(time.time()),
+                        },
                     }
                 ),
                 200,
@@ -85,6 +90,7 @@ def post_genome():
         except HTTPException as err:
             status = err.get_response().status
             return jsonify(utils.handle_error(request=request, err=err, status=status))
+    return jsonify("error"), 500
 
 
 @genome_blueprint.route("/sequences/<id_>", methods=["GET"])
@@ -105,6 +111,9 @@ def get_genome_by_id(id_):
                             "attributes": genome.serialize(),
                         }
                     ],
+                    "meta": {
+                        "timestamp": int(time.time()),
+                    },
                 }
             ),
             200,
@@ -149,6 +158,9 @@ def update_genome_by_id(id_):
                             "attributes": genome.serialize(),
                         }
                     ],
+                    "meta": {
+                        "timestamp": int(time.time()),
+                    },
                 }
             ),
             200,
