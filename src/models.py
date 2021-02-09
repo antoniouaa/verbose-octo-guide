@@ -8,7 +8,7 @@ class Genome(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
     species = db.Column(db.String(), nullable=False)
-    sequence = db.Column(db.String(), nullable=False, unique=True)
+    sequence = db.Column(db.String(), nullable=False)
     type = db.Column(db.String(), nullable=False)
 
     def __init__(self, species, description, sequence, type):
@@ -30,7 +30,7 @@ class Genome(db.Model):
         }
 
 
-def create_genome(species, description, sequence, type=None):
+def create_genome(species, description, sequence, type):
     genome = Genome(
         species=species, description=description, sequence=sequence, type=type
     )
