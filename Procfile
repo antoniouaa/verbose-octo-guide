@@ -1,4 +1,4 @@
 web: cd src/ && gunicorn app:app
-init: python manage.py db init
-migrate: python manage.py db migrate
-upgrade: python manage.py db upgrade
+init: python src/manage.py db init
+migrate: python src/manage.py db migrate
+upgrade: python src/manage.py db upgrade
