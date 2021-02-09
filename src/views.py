@@ -1,7 +1,6 @@
 from flask import jsonify, request, Blueprint
-from werkzeug.exceptions import HTTPException
+from flask_cors import cross_origin
 import time
-
 import utils
 
 genome_blueprint = Blueprint("genome_blueprint", __name__)
@@ -10,6 +9,7 @@ import models
 
 
 @genome_blueprint.route("/", methods=["GET"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def index():
@@ -27,6 +27,7 @@ def index():
 
 
 @genome_blueprint.route("/sequences", methods=["GET"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def get_all_genomes():
@@ -57,6 +58,7 @@ def get_all_genomes():
 
 
 @genome_blueprint.route("/sequences", methods=["POST"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def post_genome():
@@ -89,6 +91,7 @@ def post_genome():
 
 
 @genome_blueprint.route("/sequences/<id_>", methods=["GET"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def get_genome_by_id(id_):
@@ -116,6 +119,7 @@ def get_genome_by_id(id_):
 
 
 @genome_blueprint.route("/sequences/<id_>", methods=["DELETE"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def delete_genome_by_id(id_):
@@ -124,6 +128,7 @@ def delete_genome_by_id(id_):
 
 
 @genome_blueprint.route("/sequences/<id_>", methods=["PATCH"])
+@cross_origin(origin="*", headers=["Content-Type"])
 @utils.log_request
 @utils.error_handler
 def update_genome_by_id(id_):

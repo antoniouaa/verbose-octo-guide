@@ -14,6 +14,7 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG = False
+    CORS_HEADERS = "Content-Type"
 
 
 class StagingConfig(Config):

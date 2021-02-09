@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 import os
@@ -8,6 +9,7 @@ dotenv.load_dotenv()
 
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(os.getenv("APP_SETTINGS"))
 db = SQLAlchemy(app)
 
