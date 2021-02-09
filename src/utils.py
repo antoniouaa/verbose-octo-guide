@@ -5,14 +5,9 @@ import logging
 
 from werkzeug.exceptions import HTTPException
 
-# logging.basicConfig(
-#     handlers=[logging.FileHandler(filename="./dev.log", encoding="utf-8", mode="w")],
-#     level=logging.DEBUG,
-# )
-
 logger = logging.getLogger("genome-sequencer")
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("dev.log")
+fh = logging.FileHandler("dev.log", mode="w")
 fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)
