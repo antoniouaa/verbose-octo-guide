@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify, request
+from flask.helpers import url_for
 
 
 from sequencer.extensions import db, jwt, cors, migrate
 from sequencer.config import ProductionConfig
-from sequencer import genome
+from sequencer import utils, user, genome
 
 
 def create_app(config=ProductionConfig):
@@ -12,6 +13,22 @@ def create_app(config=ProductionConfig):
     app.config.from_object(config)
     register_extensions(app)
     register_blueprint(app)
+
+    @app.route("/", methods=["GET"])
+    @utils.log_request
+    @utils.error_handler
+    def index():
+        return (
+            jsonify(
+                {
+                    "links": {
+                        "self": request.url,
+                    },
+                    "data": [{"Welcome to": "genome_sequencer!"}],
+                }
+            ),
+            200,
+        )
 
     return app
 
@@ -24,6 +41,8 @@ def register_extensions(app):
 
 def register_blueprint(app):
     origins = app.config.get("CORS_ORIGIN_WHITELIST", "*")
+    cors.init_app(user.views.blueprint, origins=origins)
     cors.init_app(genome.views.blueprint, origins=origins)
 
-    app.register_blueprint(genome.views.blueprint)
+    app.register_blueprint(user.views.blueprint, url_prefix="/user")
+    app.register_blueprint(genome.views.blueprint, url_prefix="/sequences")

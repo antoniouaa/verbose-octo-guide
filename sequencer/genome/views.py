@@ -7,7 +7,6 @@ from sequencer import utils
 from sequencer.genome import models
 
 
-@blueprint.route("/", methods=["GET"])
 @utils.log_request
 @utils.error_handler
 def index():
