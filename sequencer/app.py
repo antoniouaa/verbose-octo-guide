@@ -3,7 +3,7 @@ from flask import Flask
 
 from sequencer.extensions import db, jwt, cors, migrate
 from sequencer.config import ProductionConfig
-from sequencer import views
+from sequencer import genome
 
 
 def create_app(config=ProductionConfig):
@@ -24,6 +24,6 @@ def register_extensions(app):
 
 def register_blueprint(app):
     origins = app.config.get("CORS_ORIGIN_WHITELIST", "*")
-    cors.init_app(views.blueprint, origins=origins)
+    cors.init_app(genome.views.blueprint, origins=origins)
 
-    app.register_blueprint(views.blueprint)
+    app.register_blueprint(genome.views.blueprint)
