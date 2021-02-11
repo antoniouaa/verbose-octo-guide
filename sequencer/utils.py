@@ -1,13 +1,13 @@
 from flask import request, jsonify
+from werkzeug.exceptions import HTTPException
 
 import functools
 import logging
 
-from werkzeug.exceptions import HTTPException
 
 logger = logging.getLogger("genome-sequencer")
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("dev.log", mode="w")
+fh = logging.FileHandler("./dev.log", mode="w")
 fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)

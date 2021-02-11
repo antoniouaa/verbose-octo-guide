@@ -1,4 +1,4 @@
-from app import db
+from sequencer.extensions import db
 
 
 class Genome(db.Model):
