@@ -4,6 +4,7 @@ from werkzeug.exceptions import HTTPException
 import functools
 import logging
 
+from sequencer.extensions import jwt
 
 logger = logging.getLogger("genome-sequencer")
 logger.setLevel(logging.DEBUG)
@@ -59,3 +60,24 @@ def error_handler(func):
             )
 
     return error_handler
+
+
+@jwt.expired_token_loader
+def expired_token_callback(expired_token):
+    token_type = expired_token["type"]
+    code = 401
+    return (
+        jsonify(
+            {
+                "links": {
+                    "self": request.url,
+                },
+                "errors": {
+                    "method": request.method,
+                    "status": code,
+                    "details": f"Expired authorization {token_type} token",
+                },
+            }
+        ),
+        code,
+    )
