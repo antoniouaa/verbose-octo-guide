@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, Unauthorized
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import time
 
@@ -36,6 +36,8 @@ def login():
         raise BadRequest("Username missing")
     if not password:
         raise BadRequest("Password missing")
+    if username != utils.get_root():
+        raise Unauthorized("You are not allowed to request a token")
     access_token = create_access_token(identity=username, expires_delta=None)
     return (
         jsonify(

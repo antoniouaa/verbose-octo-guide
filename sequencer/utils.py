@@ -3,6 +3,7 @@ from werkzeug.exceptions import HTTPException
 
 import functools
 import logging
+import os
 
 from sequencer.extensions import jwt
 
@@ -13,6 +14,10 @@ fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)
 logger.addHandler(fh)
+
+
+def get_root():
+    return os.getenv("ROOT_USERNAME")
 
 
 def log_request(func):
