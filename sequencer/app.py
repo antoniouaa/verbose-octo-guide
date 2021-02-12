@@ -45,4 +45,4 @@ def register_blueprint(app):
     cors.init_app(genome.views.blueprint, origins=origins)
 
     app.register_blueprint(user.views.blueprint, url_prefix="/user")
-    app.register_blueprint(genome.views.blueprint, url_prefix="/sequences")
+    app.register_blueprint(genome.views.blueprint, url_prefix="/seq")

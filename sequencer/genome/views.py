@@ -1,4 +1,5 @@
 from flask import jsonify, request, Blueprint
+from flask_jwt_extended import jwt_required
 import time
 
 blueprint = Blueprint("genome_blueprint", __name__)
@@ -7,23 +8,7 @@ from sequencer import utils
 from sequencer.genome import models
 
 
-@utils.log_request
-@utils.error_handler
-def index():
-    return (
-        jsonify(
-            {
-                "links": {
-                    "self": request.url,
-                },
-                "data": [{"Welcome to": "genome_sequencer!"}],
-            }
-        ),
-        200,
-    )
-
-
-@blueprint.route("/sequences", methods=["GET"])
+@blueprint.route("/", methods=["GET"])
 @utils.log_request
 @utils.error_handler
 def get_all_genomes():
@@ -53,7 +38,8 @@ def get_all_genomes():
     )
 
 
-@blueprint.route("/sequences", methods=["POST"])
+@blueprint.route("/", methods=["POST"])
+@jwt_required
 @utils.log_request
 @utils.error_handler
 def post_genome():
@@ -85,7 +71,7 @@ def post_genome():
     )
 
 
-@blueprint.route("/sequences/<id_>", methods=["GET"])
+@blueprint.route("/<id_>", methods=["GET"])
 @utils.log_request
 @utils.error_handler
 def get_genome_by_id(id_):
@@ -112,7 +98,8 @@ def get_genome_by_id(id_):
     )
 
 
-@blueprint.route("/sequences/<id_>", methods=["DELETE"])
+@blueprint.route("/<id_>", methods=["DELETE"])
+@jwt_required
 @utils.log_request
 @utils.error_handler
 def delete_genome_by_id(id_):
@@ -120,7 +107,8 @@ def delete_genome_by_id(id_):
     return ("", 204)
 
 
-@blueprint.route("/sequences/<id_>", methods=["PATCH"])
+@blueprint.route("/<id_>", methods=["PATCH"])
+@jwt_required
 @utils.log_request
 @utils.error_handler
 def update_genome_by_id(id_):
