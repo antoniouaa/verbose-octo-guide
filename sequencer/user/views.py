@@ -47,7 +47,6 @@ def login():
                 },
                 "data": {
                     "username": username,
-                    "password": password,
                     "token": access_token,
                 },
             },

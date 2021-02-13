@@ -8,6 +8,7 @@
 # compilation artifacts
 /__pycache__
 **/__pycache__
+.pytest_cache
 
 # sample sequences
 /sequences

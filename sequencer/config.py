@@ -11,19 +11,23 @@ class Config:
 
 
 class ProductionConfig(Config):
+    ENV = "production"
     DEBUG = False
     CORS_HEADERS = "Content-Type"
 
 
 class StagingConfig(Config):
+    ENV = "staging"
     DEVELOPMENT = True
     DEBUG = True
 
 
 class DevelopmentConfig(Config):
+    ENV = "development"
     DEVELOPMENT = True
     DEBUG = True
 
 
 class TestingConfig(Config):
+    ENV = "testing"
     TESTING = True

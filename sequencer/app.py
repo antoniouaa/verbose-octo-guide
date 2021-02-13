@@ -1,6 +1,4 @@
 from flask import Flask, jsonify, request
-from flask.helpers import url_for
-
 
 from sequencer.extensions import db, jwt, cors, migrate
 from sequencer.config import ProductionConfig
