@@ -1,7 +1,6 @@
 from flask import jsonify, request, Blueprint
 from werkzeug.exceptions import BadRequest, Unauthorized
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-import time
 
 blueprint = Blueprint("user_blueprint", __name__)
 
@@ -51,7 +50,7 @@ def login():
                 },
             },
         ),
-        200,
+        201,
     )
 
 

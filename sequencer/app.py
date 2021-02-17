@@ -31,7 +31,7 @@ def create_app(config=ProductionConfig):
             200,
         )
 
-    return app, db
+    return app  # , db
 
 
 def register_extensions(app):

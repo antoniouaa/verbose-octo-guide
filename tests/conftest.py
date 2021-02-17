@@ -5,6 +5,7 @@ import dotenv
 dotenv.load_dotenv()
 
 from sequencer import create_app
+from sequencer.extensions import db as _db
 from sequencer.config import TestingConfig
 from sequencer.genome.models import Genome
 
@@ -25,7 +26,7 @@ dog = {
 
 @pytest.fixture(scope="function")
 def app():
-    _app, _db = create_app(TestingConfig)
+    _app = create_app(TestingConfig)
 
     with _app.test_client() as testing_client:
         with _app.app_context():
