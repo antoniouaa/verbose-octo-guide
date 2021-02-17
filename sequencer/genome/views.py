@@ -112,7 +112,8 @@ def delete_genome_by_id(id_):
 @utils.log_request
 @utils.error_handler
 def update_genome_by_id(id_):
-    genome = models.update_genome(id_=id_, new_attrs=request.form)
+    print(request.json)
+    genome = models.update_genome(id_=id_, new_attrs=request.json)
     return (
         jsonify(
             {

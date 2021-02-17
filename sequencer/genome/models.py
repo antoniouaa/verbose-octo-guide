@@ -49,6 +49,6 @@ def delete_genome(id_):
 def update_genome(id_, new_attrs):
     genome = Genome.query.filter_by(id=id_).first_or_404()
     for attr, new_value in new_attrs.items():
-        setattr(genome, attr, new_value)
+        setattr(genome, attr, new_value.strip())
     db.session.commit()
     return genome
