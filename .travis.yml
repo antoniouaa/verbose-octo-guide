@@ -1,0 +1,16 @@
+dist: ubuntu
+sudo: required
+language: python
+python:
+  - 3.7
+
+before_install:
+  - sudo apt-get update
+  - curl -OsSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py
+  - python get-poetry.py --preview -y
+  - export PATH=$PATH:~/.poetry/bin
+  - poetry install
+
+script:
+  - poetry run black .
+  - poetry run pytest -v
