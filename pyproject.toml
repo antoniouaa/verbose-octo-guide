@@ -32,7 +32,7 @@ pytest = "^6.2.2"
 [tool.poetry.dev-dependencies.black]
 version = "20.8b1"
 allow-prereleases = true
-python = "^3.7"
+python = "3.7.6"
 markers = "platform_python_implementation == 'CPython'"
 
 [build-system]
