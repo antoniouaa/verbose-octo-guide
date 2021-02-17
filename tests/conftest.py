@@ -1,40 +1,24 @@
 import pytest
 import os
 import dotenv
-from webtest import TestApp
 
 dotenv.load_dotenv()
 
 from sequencer import create_app
 from sequencer.extensions import db as _db
 from sequencer.config import TestingConfig
-from sequencer.genome.models import Genome
-from .factories import GenomeFactory
 
 
 @pytest.fixture(scope="function")
 def app():
     _app = create_app(TestingConfig)
 
-    with _app.test_request_context():
-        yield _app
-
-
-@pytest.fixture(scope="function")
-def testapp(app):
-    """A Webtest app."""
-    return TestApp(app)
-
-
-# @pytest.fixture(scope="function")
-# def db(app):
-#     _db.app = app
-#     with app.app_context():
-#         _db.create_all()
-
-#     yield _db
-#     _db.session.close()
-#     _db.drop_all()
+    with _app.test_client() as testing_client:
+        with _app.app_context():
+            _db.create_all()
+            yield testing_client
+            _db.session.close()
+            _db.drop_all()
 
 
 @pytest.fixture
