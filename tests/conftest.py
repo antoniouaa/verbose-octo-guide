@@ -5,9 +5,8 @@ import dotenv
 dotenv.load_dotenv()
 
 from sequencer import create_app
-
-# from sequencer.extensions import db as _db
 from sequencer.config import TestingConfig
+from sequencer.genome.models import Genome
 
 human = {
     "description": "Human protein 1",
@@ -31,6 +30,11 @@ def app():
     with _app.test_client() as testing_client:
         with _app.app_context():
             _db.create_all()
+            human_genome = Genome(**human)
+            dog_genome = Genome(**dog)
+            _db.session.add(human_genome)
+            _db.session.add(dog_genome)
+            _db.session.commit()
 
             yield testing_client
             _db.session.close()
