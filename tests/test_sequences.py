@@ -1,7 +1,7 @@
 import json
 
 
-def test_all_sequences_empty(app):
+def test_get_all_genomes(app):
     response = app.get("/seq")
 
     expected_data = []
@@ -14,7 +14,7 @@ def test_all_sequences_empty(app):
     assert expected_length == response.json["meta"]["length"]
 
 
-def test_all_sequencers_populated(app, make_root):
+def test_post_genome(app, make_root):
     root = json.dumps(make_root())
     assert isinstance(root, str)
 
@@ -29,28 +29,20 @@ def test_all_sequencers_populated(app, make_root):
     token = str(response.json["data"]["token"])
 
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    human = {
-        "description": "Human protein 1",
-        "species": "Homo sapiens",
-        "sequence": "ACGT",
-        "type": "PROTEIN_FULL",
+    genome = {
+        "description": "Cat protein 120",
+        "species": "Felis catus",
+        "sequence": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "type": "PROTEIN_FRAGMENT",
     }
-    dog = {
-        "description": "Canine RNA 1",
-        "species": "Canis lupus",
-        "sequence": "TGCA",
-        "type": "RNA",
-    }
-    response = app.post("/seq", data=json.dumps(human), headers=headers)
+
+    response = app.post("/seq", data=json.dumps(genome), headers=headers)
+
     assert response.status_code == 201
-
-    response = app.post("/seq", data=json.dumps(dog), headers=headers)
-    assert response.status_code == 201
-
-    response = app.get("/seq")
-
-    assert response.status_code == 200
     assert response.content_type == "application/json"
-    assert response.json["meta"]["length"] == 2
     assert response.json["links"] == {"self": "http://localhost/seq"}
-    assert response.json["data"][0]["attributes"]["species"] == human["species"]
+    assert response.json["data"][-1]["attributes"]["species"] == genome["species"]
+
+
+def test_get_genome_by_id(app):
+    response = app.get("/seq")

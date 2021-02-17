@@ -1,1 +1,1 @@
-from sequencer.app import create_app
+from sequencer.app import create_app, db

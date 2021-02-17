@@ -5,17 +5,33 @@ import dotenv
 dotenv.load_dotenv()
 
 from sequencer import create_app
-from sequencer.extensions import db as _db
+
+# from sequencer.extensions import db as _db
 from sequencer.config import TestingConfig
+
+human = {
+    "description": "Human protein 1",
+    "species": "Homo sapiens",
+    "sequence": "ACGT",
+    "type": "PROTEIN_FULL",
+}
+
+dog = {
+    "description": "Canine RNA 1",
+    "species": "Canis lupus",
+    "sequence": "TGCA",
+    "type": "RNA",
+}
 
 
 @pytest.fixture(scope="function")
 def app():
-    _app = create_app(TestingConfig)
+    _app, _db = create_app(TestingConfig)
 
     with _app.test_client() as testing_client:
         with _app.app_context():
             _db.create_all()
+
             yield testing_client
             _db.session.close()
             _db.drop_all()
