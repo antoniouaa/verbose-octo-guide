@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from werkzeug.exceptions import BadRequest, Unauthorized
+from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import time
 
@@ -62,6 +62,9 @@ def signup():
                     "id": user.id,
                     "attributes": user.serialize(),
                 },
+                "meta": {
+                    "timestamp": int(time.time()),
+                },
             },
         ),
         201,
@@ -78,7 +81,12 @@ def login():
         raise BadRequest("Username missing")
     if not password:
         raise BadRequest("Password missing")
-    user = models.User.query.filter_by(username=username).first_or_404()
+
+    user = models.User.query.filter_by(username=username).first()
+    if user is None:
+        raise NotFound("User does not exist")
+    if not user.validate_password(password):
+        raise Unauthorized("Passwords don't match")
     access_token = create_access_token(identity=user.serialize(), expires_delta=None)
     return (
         jsonify(
@@ -91,6 +99,9 @@ def login():
                     "id": user.id,
                     "attributes": user.serialize(),
                     "token": access_token,
+                },
+                "meta": {
+                    "timestamp": int(time.time()),
                 },
             },
         ),
@@ -113,6 +124,9 @@ def protected_resource():
                 "data": [
                     {"Protected": "resource!", "Logged in as": current_user["username"]}
                 ],
+                "meta": {
+                    "timestamp": int(time.time()),
+                },
             }
         ),
         200,
