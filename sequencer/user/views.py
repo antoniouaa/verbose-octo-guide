@@ -81,7 +81,6 @@ def login():
         raise BadRequest("Username missing")
     if not password:
         raise BadRequest("Password missing")
-
     user = models.User.query.filter_by(username=username).first()
     if user is None:
         raise NotFound("User does not exist")
