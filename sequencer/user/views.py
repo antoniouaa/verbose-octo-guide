@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
+from werkzeug.exceptions import BadRequest, NotFound, Unauthorized, Conflict
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import time
 
@@ -50,6 +50,9 @@ def signup():
         raise BadRequest("Username missing")
     if not password:
         raise BadRequest("Password missing")
+    user = models.User.query.filter_by(username=username).first()
+    if user is not None:
+        raise Conflict("User already exists!")
     user = models.create_user(username=username, password=password)
     return (
         jsonify(
