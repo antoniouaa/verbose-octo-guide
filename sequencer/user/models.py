@@ -16,13 +16,13 @@ class User(db.Model):
 
     def __init__(self, username, password):
         self.username = username
-        self.password_hash = self._hash_password(password)
+        self.password_hash = self._hash_password(str(password))
+
+    def _hash_password(password):
+        return generate_password_hash(password)
 
     def _check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-    def _hash_password(self, password):
-        return generate_password_hash(password)
 
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
