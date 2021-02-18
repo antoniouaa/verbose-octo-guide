@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sequencer.extensions import db
 
 
@@ -10,6 +12,8 @@ class Genome(db.Model):
     species = db.Column(db.String(), nullable=False)
     sequence = db.Column(db.String(), nullable=False)
     type = db.Column(db.String(), nullable=False)
+    created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, species, description, sequence, type):
         self.species = species
@@ -18,7 +22,7 @@ class Genome(db.Model):
         self.type = type
 
     def __repr__(self):
-        return f"<id {self.id}>"
+        return f"<Genome: id {self.id}>"
 
     def serialize(self):
         return {
@@ -50,5 +54,6 @@ def update_genome(id_, new_attrs):
     genome = Genome.query.filter_by(id=id_).first_or_404()
     for attr, new_value in new_attrs.items():
         setattr(genome, attr, new_value.strip())
+    genome.updated_on = datetime.utcnow()
     db.session.commit()
     return genome

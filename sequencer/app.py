@@ -2,10 +2,7 @@ from flask import Flask, jsonify, request
 
 from sequencer.extensions import db, jwt, cors, migrate
 from sequencer.config import ProductionConfig
-from sequencer.genome.models import Genome
 from sequencer import utils, genome, user
-
-# from sequencer.user.models import User
 
 
 def create_app(config=ProductionConfig):
@@ -31,7 +28,7 @@ def create_app(config=ProductionConfig):
             200,
         )
 
-    return app  # , db
+    return app
 
 
 def register_extensions(app):
