@@ -3,7 +3,6 @@ from werkzeug.exceptions import BadRequest, NotFound, Unauthorized, Conflict
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import time
 
-
 blueprint = Blueprint("user_blueprint", __name__)
 
 from sequencer import utils
@@ -133,3 +132,14 @@ def protected_resource():
         ),
         200,
     )
+
+
+@blueprint.route("/delete", methods=["DELETE"])
+@jwt_required
+@utils.log_request
+@utils.error_handler
+def delete_user():
+    current_user = get_jwt_identity()
+    print(current_user)
+    models.delete_user(username=current_user["username"])
+    return ("", 204)

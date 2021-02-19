@@ -96,3 +96,51 @@ def test_login_badrequest(app):
     assert response.status_code == 400
     assert response.json["errors"]["method"] == "POST"
     assert response.json["errors"]["details"] == "400 Bad Request: Username missing"
+
+
+def test_signup_conflict(app):
+    test_user = {"username": "test_username", "password": "test_password"}
+
+    response = app.post("/user/signup", data=json.dumps(test_user), headers=headers)
+    assert response.status_code == 201
+
+    response = app.post("/user/signup", data=json.dumps(test_user), headers=headers)
+    assert response.status_code == 409
+    assert response.json["errors"]["method"] == "POST"
+    assert response.json["errors"]["details"] == "409 Conflict: User already exists!"
+
+
+def test_login_notfound(app):
+    test_user = {"username": "test_username", "password": "test_password"}
+
+    response = app.post("/user/login", data=json.dumps(test_user), headers=headers)
+    assert response.status_code == 404
+    assert response.json["errors"]["method"] == "POST"
+    assert response.json["errors"]["details"] == "404 Not Found: User does not exist"
+
+
+def test_login_unauthorized(app, make_root):
+    username, _ = make_root().values()
+    test_user = {"username": username, "password": "test_password"}
+
+    response = app.post("/user/login", data=json.dumps(test_user), headers=headers)
+    assert response.status_code == 401
+    assert response.json["errors"]["method"] == "POST"
+    assert (
+        response.json["errors"]["details"] == "401 Unauthorized: Passwords don't match"
+    )
+
+
+def test_delete_user(app):
+    test_user = {"username": "test_username", "password": "test_password"}
+
+    response = app.post("/user/signup", data=json.dumps(test_user), headers=headers)
+    assert response.status_code == 201
+
+    response = app.post("/user/login", data=json.dumps(test_user), headers=headers)
+    token = str(response.json["data"]["token"])
+    auth_headers = {**headers, "Authorization": f"Bearer {token}"}
+
+    response = app.delete("/user/delete", headers=auth_headers)
+    assert response.status_code == 204
+    assert response.json is None
