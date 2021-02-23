@@ -35,28 +35,26 @@ def test_post_genome(app, make_root):
     assert response.status_code == 201
     assert response.content_type == "application/json"
     assert response.json["links"] == {"self": "http://localhost/seq"}
-    assert response.json["data"][0]["attributes"]["species"] == genome["species"]
-    assert response.json["data"][0]["attributes"]["sequence"] == genome["sequence"]
-    assert response.json["data"][0]["attributes"]["type"] == genome["type"]
-    assert (
-        response.json["data"][0]["attributes"]["description"] == genome["description"]
-    )
+    assert response.json["data"]["attributes"]["species"] == genome["species"]
+    assert response.json["data"]["attributes"]["sequence"] == genome["sequence"]
+    assert response.json["data"]["attributes"]["type"] == genome["type"]
+    assert response.json["data"]["attributes"]["description"] == genome["description"]
 
 
 def test_get_genome_by_id(app):
     response = app.get("/seq/1", headers=headers)
     assert response.status_code == 200
-    assert response.json["data"][0]["attributes"]["species"] == human["species"]
-    assert response.json["data"][0]["attributes"]["sequence"] == human["sequence"]
-    assert response.json["data"][0]["attributes"]["type"] == human["type"]
-    assert response.json["data"][0]["attributes"]["description"] == human["description"]
+    assert response.json["data"]["attributes"]["species"] == human["species"]
+    assert response.json["data"]["attributes"]["sequence"] == human["sequence"]
+    assert response.json["data"]["attributes"]["type"] == human["type"]
+    assert response.json["data"]["attributes"]["description"] == human["description"]
 
     response = app.get("/seq/2", headers=headers)
     assert response.status_code == 200
-    assert response.json["data"][0]["attributes"]["species"] == dog["species"]
-    assert response.json["data"][0]["attributes"]["sequence"] == dog["sequence"]
-    assert response.json["data"][0]["attributes"]["type"] == dog["type"]
-    assert response.json["data"][0]["attributes"]["description"] == dog["description"]
+    assert response.json["data"]["attributes"]["species"] == dog["species"]
+    assert response.json["data"]["attributes"]["sequence"] == dog["sequence"]
+    assert response.json["data"]["attributes"]["type"] == dog["type"]
+    assert response.json["data"]["attributes"]["description"] == dog["description"]
 
 
 def test_delete_genome_by_id(app, make_root):
@@ -96,4 +94,4 @@ def test_update_genome_by_id(app, make_root):
 
     response = app.patch("/seq/1", data=json.dumps(patched_human), headers=auth_headers)
     assert response.status_code == 200
-    assert response.json["data"][0]["attributes"]["species"] == patched_human["species"]
+    assert response.json["data"]["attributes"]["species"] == patched_human["species"]

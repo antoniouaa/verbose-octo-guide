@@ -55,13 +55,11 @@ def post_genome():
                 "links": {
                     "self": request.url,
                 },
-                "data": [
-                    {
-                        "type": genome.__name__,
-                        "id": genome.id,
-                        "attributes": genome.serialize(),
-                    }
-                ],
+                "data": {
+                    "type": genome.__name__,
+                    "id": genome.id,
+                    "attributes": genome.serialize(),
+                },
                 "meta": {
                     "timestamp": int(time.time()),
                 },
@@ -82,13 +80,11 @@ def get_genome_by_id(id_):
                 "links": {
                     "self": request.url,
                 },
-                "data": [
-                    {
-                        "type": genome.__name__,
-                        "id": genome.id,
-                        "attributes": genome.serialize(),
-                    }
-                ],
+                "data": {
+                    "type": genome.__name__,
+                    "id": genome.id,
+                    "attributes": genome.serialize(),
+                },
                 "meta": {
                     "timestamp": int(time.time()),
                 },
@@ -120,13 +116,11 @@ def update_genome_by_id(id_):
                 "links": {
                     "self": request.url,
                 },
-                "data": [
-                    {
-                        "type": genome.__name__,
-                        "id": genome.id,
-                        "attributes": genome.serialize(),
-                    }
-                ],
+                "data": {
+                    "type": genome.__name__,
+                    "id": genome.id,
+                    "attributes": genome.serialize(),
+                },
                 "meta": {
                     "timestamp": int(time.time()),
                 },
