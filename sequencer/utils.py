@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from flask_jwt_extended.exceptions import InvalidHeaderError
 from werkzeug.exceptions import HTTPException
 
 import functools
@@ -53,6 +54,12 @@ def error_handler(func):
             return func(*args, **kwargs)
         except HTTPException as err:
             status = err.get_response().status
+            return (
+                jsonify(handle_error(request=request, err=err, status=status)),
+                str(status),
+            )
+        except InvalidHeaderError as err:
+            status = 401
             return (
                 jsonify(handle_error(request=request, err=err, status=status)),
                 status,

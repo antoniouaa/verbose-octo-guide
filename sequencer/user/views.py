@@ -111,9 +111,9 @@ def login():
 
 
 @blueprint.route("/protected", methods=["GET"])
-@jwt_required
 @utils.log_request
 @utils.error_handler
+@jwt_required
 def protected_resource():
     current_user = get_jwt_identity()
     return (
@@ -135,9 +135,9 @@ def protected_resource():
 
 
 @blueprint.route("/delete", methods=["DELETE"])
-@jwt_required
 @utils.log_request
 @utils.error_handler
+@jwt_required
 def delete_user():
     current_user = get_jwt_identity()
     print(current_user)

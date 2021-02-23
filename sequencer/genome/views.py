@@ -39,9 +39,9 @@ def get_all_genomes():
 
 
 @blueprint.route("/", methods=["POST"])
-@jwt_required
 @utils.log_request
 @utils.error_handler
+@jwt_required
 def post_genome():
     resp_data = request.get_json()
     description = resp_data.get("description")
@@ -95,18 +95,18 @@ def get_genome_by_id(id_):
 
 
 @blueprint.route("/<id_>", methods=["DELETE"])
-@jwt_required
 @utils.log_request
 @utils.error_handler
+@jwt_required
 def delete_genome_by_id(id_):
     models.delete_genome(id_)
     return ("", 204)
 
 
 @blueprint.route("/<id_>", methods=["PATCH"])
-@jwt_required
 @utils.log_request
 @utils.error_handler
+@jwt_required
 def update_genome_by_id(id_):
     print(request.json)
     genome = models.update_genome(id_=id_, new_attrs=request.json)
