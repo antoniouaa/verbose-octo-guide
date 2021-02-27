@@ -25,6 +25,7 @@ toml = "^0.10.2"
 psycopg2 = {version = "^2.8.6", platform = "win32"}
 psycopg2-binary = {version = "2.8.6", platform = "linux"}
 pre-commit = "^2.10.1"
+pytest-cov = "^2.11.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

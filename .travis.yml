@@ -23,4 +23,4 @@ before_script:
 
 script:
   - poetry run black .
-  - poetry run pytest -v
+  - poetry run pytest --cov=sequencer tests/
