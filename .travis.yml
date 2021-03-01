@@ -14,8 +14,8 @@ before_install:
   - curl -OsSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py
   - python get-poetry.py --preview -y
   - export PATH=$PATH:~/.poetry/bin
-  - poetry install
   - poetry update
+  - poetry install
 
 before_script:
   - psql --version
