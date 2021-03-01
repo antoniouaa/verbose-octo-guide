@@ -1,6 +1,8 @@
 from flask import request, Blueprint
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from werkzeug.exceptions import Unauthorized
 import time
+import os
 
 blueprint = Blueprint("genome_blueprint", __name__)
 
@@ -93,6 +95,9 @@ def get_genome_by_id(id_):
 @utils.error_handler
 @jwt_required
 def delete_genome_by_id(id_):
+    current_user = get_jwt_identity()
+    if current_user["username"] != os.getenv("ROOT_USERNAME"):
+        raise Unauthorized("You don't have enough permissions for that action.")
     models.delete_genome(id_)
     return ("", 204)
 
@@ -102,6 +107,9 @@ def delete_genome_by_id(id_):
 @utils.error_handler
 @jwt_required
 def update_genome_by_id(id_):
+    current_user = get_jwt_identity()
+    if current_user["username"] != os.getenv("ROOT_USERNAME"):
+        raise Unauthorized("You don't have enough permissions for that action.")
     genome = models.update_genome(id_=id_, new_attrs=request.json)
     return (
         {
