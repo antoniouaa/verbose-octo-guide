@@ -37,6 +37,13 @@ allow-prereleases = true
 python = "3.7.6"
 markers = "platform_python_implementation == 'CPython'"
 
+[tool.coverage]
+branch = true
+exclude_lines = """
+def __repr__
+if __name__ == "__main__":
+"""
+
 [build-system]
 requires = ["poetry>=1.1.4"]
 build-backend = "poetry.masonry.api"

@@ -1,4 +1,4 @@
-from flask import jsonify, request, Blueprint
+from flask import request, Blueprint
 from flask_jwt_extended import jwt_required
 import time
 
@@ -14,26 +14,24 @@ from sequencer.genome import models
 def get_all_genomes():
     genomes = models.Genome.query.all()
     return (
-        jsonify(
-            {
-                "links": {
-                    "self": request.url,
-                },
-                "data": [
-                    {
-                        "type": genome.__name__,
-                        "id": genome.id,
-                        "attributes": genome.serialize(),
-                    }
-                    for genome in genomes
-                    if genome is not None
-                ],
-                "meta": {
-                    "length": len(genomes),
-                    "timestamp": int(time.time()),
-                },
-            }
-        ),
+        {
+            "links": {
+                "self": request.url,
+            },
+            "data": [
+                {
+                    "type": genome.__name__,
+                    "id": genome.id,
+                    "attributes": genome.serialize(),
+                }
+                for genome in genomes
+                if genome is not None
+            ],
+            "meta": {
+                "length": len(genomes),
+                "timestamp": int(time.time()),
+            },
+        },
         200,
     )
 
@@ -50,21 +48,19 @@ def post_genome():
     type_ = resp_data.get("type")
     genome = models.create_genome(species, description, sequence, type_)
     return (
-        jsonify(
-            {
-                "links": {
-                    "self": request.url,
-                },
-                "data": {
-                    "type": genome.__name__,
-                    "id": genome.id,
-                    "attributes": genome.serialize(),
-                },
-                "meta": {
-                    "timestamp": int(time.time()),
-                },
-            }
-        ),
+        {
+            "links": {
+                "self": request.url,
+            },
+            "data": {
+                "type": genome.__name__,
+                "id": genome.id,
+                "attributes": genome.serialize(),
+            },
+            "meta": {
+                "timestamp": int(time.time()),
+            },
+        },
         201,
     )
 
@@ -75,21 +71,19 @@ def post_genome():
 def get_genome_by_id(id_):
     genome = models.Genome.query.filter_by(id=id_).first_or_404()
     return (
-        jsonify(
-            {
-                "links": {
-                    "self": request.url,
-                },
-                "data": {
-                    "type": genome.__name__,
-                    "id": genome.id,
-                    "attributes": genome.serialize(),
-                },
-                "meta": {
-                    "timestamp": int(time.time()),
-                },
-            }
-        ),
+        {
+            "links": {
+                "self": request.url,
+            },
+            "data": {
+                "type": genome.__name__,
+                "id": genome.id,
+                "attributes": genome.serialize(),
+            },
+            "meta": {
+                "timestamp": int(time.time()),
+            },
+        },
         200,
     )
 
@@ -108,23 +102,20 @@ def delete_genome_by_id(id_):
 @utils.error_handler
 @jwt_required
 def update_genome_by_id(id_):
-    print(request.json)
     genome = models.update_genome(id_=id_, new_attrs=request.json)
     return (
-        jsonify(
-            {
-                "links": {
-                    "self": request.url,
-                },
-                "data": {
-                    "type": genome.__name__,
-                    "id": genome.id,
-                    "attributes": genome.serialize(),
-                },
-                "meta": {
-                    "timestamp": int(time.time()),
-                },
-            }
-        ),
+        {
+            "links": {
+                "self": request.url,
+            },
+            "data": {
+                "type": genome.__name__,
+                "id": genome.id,
+                "attributes": genome.serialize(),
+            },
+            "meta": {
+                "timestamp": int(time.time()),
+            },
+        },
         200,
     )

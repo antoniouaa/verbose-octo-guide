@@ -13,5 +13,6 @@ with app.app_context():
     db.create_all()
     username = os.getenv("ROOT_USERNAME")
     password = os.getenv("ROOT_PASSWORD")
+    email = os.getenv("ROOT_EMAIL")
     if models.User.query.filter_by(username=username).first() is None:
-        models.create_user(username=username, password=password)
+        models.create_user(username=username, password=password, email=email)

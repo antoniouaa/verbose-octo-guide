@@ -10,19 +10,18 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), nullable=False, unique=True)
+    email = db.Column(db.String(), nullable=False, unique=True)
     password_hash = db.Column(db.String(), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
     updated_on = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, email):
+        self.email = email
         self.username = username
         self.password_hash = self._hash_password(str(password))
 
     def _hash_password(self, password):
         return generate_password_hash(password)
-
-    def _check_password(self, password):
-        return check_password_hash(self.password_hash, password)
 
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -34,13 +33,14 @@ class User(db.Model):
         return {
             "id": self.id,
             "username": self.username,
+            "email": self.email,
             "created_on": self.created_on,
             "updated_on": self.updated_on,
         }
 
 
-def create_user(username, password):
-    user = User(username=username, password=password)
+def create_user(username, password, email):
+    user = User(username=username, password=password, email=email)
     db.session.add(user)
     db.session.commit()
     return user
