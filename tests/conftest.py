@@ -55,6 +55,16 @@ def make_root():
         return {
             "username": os.getenv("ROOT_USERNAME"),
             "password": os.getenv("ROOT_PASSWORD"),
+            "email": os.getenv("ROOT_EMAIL"),
         }
 
     return get_root
+
+
+@pytest.fixture
+def get_user():
+    return {
+        "username": "test_username",
+        "password": "test_password",
+        "email": "test_email@mail.com",
+    }
