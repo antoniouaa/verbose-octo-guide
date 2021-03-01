@@ -49,7 +49,7 @@ def app(make_root):
             _db.drop_all()
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def make_root():
     def get_root():
         return {
@@ -61,7 +61,7 @@ def make_root():
     return get_root
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def get_user():
     return {
         "username": "test_username",

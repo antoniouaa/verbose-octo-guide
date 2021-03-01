@@ -88,7 +88,9 @@ def login():
         raise NotFound("User does not exist")
     if not user.validate_password(password):
         raise Unauthorized("Passwords don't match")
-    access_token = create_access_token(identity=user.serialize(), expires_delta=None)
+    access_token = create_access_token(
+        identity=user.serialize(), expires_delta=datetime.timedelta(minutes=5)
+    )
     return (
         {
             "links": {
