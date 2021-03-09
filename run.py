@@ -1,6 +1,7 @@
 import dotenv
 import os
 
+
 dotenv.load_dotenv()
 
 from sequencer import create_app, db
