@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from dna_toolkit import toolkit
+
 from sequencer.extensions import db
 
 
@@ -14,12 +16,18 @@ class Genome(db.Model):
     type = db.Column(db.String(), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
     updated_on = db.Column(db.DateTime, default=datetime.utcnow)
+    gc_content = db.Column(db.Integer, nullable=True)
+    rna_transcription = db.Column(db.String(), nullable=True)
+    reverse_complement = db.Column(db.String(), nullable=True)
 
     def __init__(self, species, description, sequence, type):
         self.species = species
         self.description = description
         self.sequence = sequence
         self.type = type
+        self.gc_content = toolkit.gc_content(self.sequence)
+        self.rna_transcription = toolkit.transcription(self.sequence)
+        self.reverse_complement = toolkit.reverse_comp(self.sequence)
 
     def __repr__(self):
         return f"<Genome: id {self.id}>"
@@ -31,6 +39,11 @@ class Genome(db.Model):
             "species": self.species,
             "sequence": self.sequence,
             "type": self.type,
+            "dna_attributes": {
+                "gc_content": self.gc_content,
+                "rna_transcription": self.rna_transcription,
+                "reverse_complement": self.reverse_complement,
+            },
         }
 
 
