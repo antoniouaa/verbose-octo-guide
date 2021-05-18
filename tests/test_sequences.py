@@ -1,5 +1,5 @@
 import json
-from tests.conftest import human, dog, headers
+from tests.conftest import human, dog, giraffe, headers
 
 
 def test_get_all_genomes(app):
@@ -24,21 +24,18 @@ def test_post_genome(app, make_root):
     token = str(response.json["data"]["token"])
 
     auth_headers = {**headers, "Authorization": f"Bearer {token}"}
-    genome = {
-        "description": "Cat protein 120",
-        "species": "Felis catus",
-        "sequence": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "type": "PROTEIN_FRAGMENT",
-    }
+    test_genome = giraffe
 
-    response = app.post("/seq", data=json.dumps(genome), headers=auth_headers)
+    response = app.post("/seq", data=json.dumps(test_genome), headers=auth_headers)
     assert response.status_code == 201
     assert response.content_type == "application/json"
     assert response.json["links"] == {"self": "http://localhost/seq"}
-    assert response.json["data"]["attributes"]["species"] == genome["species"]
-    assert response.json["data"]["attributes"]["sequence"] == genome["sequence"]
-    assert response.json["data"]["attributes"]["type"] == genome["type"]
-    assert response.json["data"]["attributes"]["description"] == genome["description"]
+    assert response.json["data"]["attributes"]["species"] == test_genome["species"]
+    assert response.json["data"]["attributes"]["sequence"] == test_genome["sequence"]
+    assert response.json["data"]["attributes"]["type"] == test_genome["type"]
+    assert (
+        response.json["data"]["attributes"]["description"] == test_genome["description"]
+    )
 
 
 def test_get_genome_by_id(app):
